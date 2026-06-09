@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master en PSeInt: Teoría y Práctica Interactiva</title>
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #16a085;
+            --accent-color: #e74c3c;
+            --success-color: #27ae60;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
+            --code-bg: #1e2530;
+            --workspace-bg: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), #34495e);
+            color: #fff;
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 { margin: 0; font-size: 2.5rem; }
+        header p { margin: 10px 0 0; font-size: 1.2rem; opacity: 0.9; }
+
+        nav {
+            background-color: var(--primary-color);
+            padding: 12px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        nav a:hover { color: var(--secondary-color); }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        section {
+            background: #fff;
+            padding: 35px;
+            margin-bottom: 35px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        h2 {
+            color: var(--primary-color);
+            border-bottom: 3px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+
+        h3 { color: var(--secondary-color); margin-top: 25px; }
+
+        p { text-align: justify; margin-bottom: 15px; }
+
+        ul, ol { margin-bottom: 20px; padding-left: 25px; }
+
+        li { margin-bottom: 8px; }
+
+        /* Estilos de Bloques de Código Estático */
+        pre {
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: 'Consolas', monospace;
+            font-size: 0.95rem;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+            margin: 15px 0;
+        }
+
+        .keyword { color: #ff79c6; font-weight: bold; }
+        .text { color: #f1fa8c; }
+        .comment { color: #6272a4; font-style: italic; }
+        .number { color: #bd93f9; }
+
+        /* Contenedores de Imágenes */
+        .image-placeholder {
+            background-color: #eaeded;
+            border: 2px dashed #bdc3c7;
+            padding: 30px;
+            text-align: center;
+            margin: 20px 0;
+            color: #7f8c8d;
+            border-radius: 6px;
+            font-style: italic;
+        }
+
+        /* Tablas de Operadores */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 12px; text-align: left; }
+        th { background-color: var(--primary-color); color: white; }
+        tr:nth-child(even) { background-color: #f2f2f2; }
+
+        /* --- ESTILOS DE LA ZONA INTERACTIVA --- */
+        .interactive-box {
+            background-color: #f0f4f8;
+            border-left: 5px solid var(--secondary-color);
+            padding: 20px;
+            margin-top: 25px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .interactive-box h4 {
+            margin-top: 0;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .workspace {
+            background-color: var(--workspace-bg);
+            padding: 20px;
+            border-radius: 6px;
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .workspace p { color: #cbd5e0; margin-top: 0; font-size: 0.9rem; }
+
+        textarea {
+            width: 100%;
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            border: 1px solid #4a5568;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            padding: 12px;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            resize: vertical;
+        }
+
+        .h-small { height: 60px; }
+        .h-large { height: 160px; }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: bold;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 12px;
+            transition: background 0.2s;
+        }
+
+        button:hover { background-color: #117a65; }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        .quiz-option {
+            display: block;
+            background: #fff;
+            padding: 12px 15px;
+            margin: 8px 0;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover { background: #edf2f7; transform: translateX(5px); }
+        .selected-correct { background-color: #d4edda !important; border-color: #c3e6cb; color: #155724; font-weight: bold; }
+        .selected-incorrect { background-color: #f8d7da !important; border-color: #f5c6cb; color: #721c24; font-weight: bold; }
+
+        footer {
+            background-color: var(--primary-color);
+            color: #fff;
+            text-align: center;
+            padding: 25px 0;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Plataforma Interactiva de Aprendizaje: PSeInt</h1>
+        <p>Estudiá la teoría profunda, analizá el código y resolvé los desafíos en tiempo real</p>
+    </header>
+
+    <nav>
+        <a href="#modulo1">1. Variables y Datos</a>
+        <a href="#modulo2">2. Condicionales</a>
+        <a href="#modulo3">3. Bucles y Ciclos</a>
+        <a href="#modulo4">4. Desafío Integrador</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- MÓDULO 1: VARIABLES Y SINTAXIS -->
+        <section id="modulo1">
+            <h2>1. Introducción a Algoritmos, Variables y Tipos de Datos</h2>
+            <p>
+                Un <strong>algoritmo</strong> es un conjunto finito, ordenado y secuencial de instrucciones lógicas diseñadas para resolver un problema determinado. En el entorno de PSeInt, utilizamos <strong>pseudocódigo</strong> en español, lo que nos permite entrenar nuestra lógica algorítmica sin pelearnos con las barreras lingüísticas de lenguajes complejos.
+            </p>
+            <p>
+                Para procesar información, necesitamos recurrir a las <strong>variables</strong>. Una variable es, técnicamente, un espacio reservado en la memoria RAM de la computadora donde guardamos un dato que puede transformarse durante la ejecución de nuestro programa. En configuraciones de perfil estricto, es fundamental <em>declarar</em> el tipo de dato antes de usarlo.
+            </p>
+            
+            <h3>Tipos de Datos Soportados</h3>
+            <ul>
+                <li><strong>Entero:</strong> Valores numéricos exactos, sin componentes decimales (ej. <code>25</code>, <code>-100</code>).</li>
+                <li><strong>Real:</strong> Números que incluyen precisión decimal (ej. <code>3.1416</code>, <code>0.75</code>).</li>
+                <li><strong>Caracter / Cadena:</strong> Texto, letras, palabras o símbolos envueltos entre comillas dobles (ej. <code>"Juan"</code>, <code>"A"</code>).</li>
+                <li><strong>Logico:</strong> Variables booleanas que solo aceptan dos estados posibles: <code>Verdadero</code> o <code>Falso</code>.</li>
+            </ul>
+
+            <div class="image-placeholder">
+                [Sugerencia de Imagen: Diagrama visual mostrando cómo una variable actúa como una caja etiquetada en la memoria que guarda un tipo específico de dato]
+            </div>
+
+            <h3>Sintaxis Correcta de Estructura Básica</h3>
+            <p>A continuación se expone la sintaxis limpia y libre de errores de un programa de entrada y salida de datos:</p>
+<pre><span class="keyword">Algoritmo</span> RegistroUsuario
+    <span class="keyword">Definir</span> nombre <span class="keyword">Como</span> <span class="keyword">Caracter</span>;
+    <span class="keyword">Definir</span> edad <span class="keyword">Como</span> <span class="keyword">Entero</span>;
+    
+    <span class="keyword">Escribir</span> <span class="text">"Ingresá tu nombre:"</span>;
+    <span class="keyword">Leer</span> nombre;
+    <span class="keyword">Escribir</span> <span class="text">"Ingresá tu edad:"</span>;
+    <span class="keyword">Leer</span> edad;
+    
+    <span class="keyword">Escribir</span> <span class="text">"Usuario registrado: "</span>, nombre, <span class="text">" de "</span>, edad, <span class="text">" años."</span>;
+<span class="keyword">FinAlgoritmo</span></pre>
+
+            <!-- ZONA INTERACTIVA DEL MÓDULO 1 -->
+            <div class="interactive-box">
+                <h4>💻 LABORATORIO DE PRÁCTICA: Completá la Sintaxis</h4>
+                <p><strong>Consigna:</strong> Escribí la línea de código que falta dentro del cuadro de texto para declarar correctamente una variable llamada <code>precioProducto</code> que admita números con decimales. ¡No olvides el punto y coma final!</p>
+                
+                <div class="workspace">
+                    <div style="font-family: monospace; color: #a0aec0; margin-bottom: 5px;">Algoritmo TiendaVirtual</div>
+                    <textarea id="codeMod1" class="h-small" placeholder="// Escribí acá tu línea de código..."></textarea>
+                    <div style="font-family: monospace; color: #a0aec0; margin-top: 5px;">FinAlgoritmo</div>
+                    <button onclick="checkModulo1()">Comprobar Código</button>
+                </div>
+                <div id="feedMod1" class="feedback"></div>
+            </div>
+        </section>
+
+
+        <!-- MÓDULO 2: ESTRUCTURAS CONDICIONALES -->
+        <section id="modulo2">
+            <h2>2. Estructuras de Control Condicionales (Si-Entonces)</h2>
+            <p>
+                Los algoritmos planos se ejecutan de manera lineal, de arriba hacia abajo. Sin embargo, para dotar de inteligencia a un sistema, requerimos la toma de decisiones. La estructura <strong>Si-Entonces-Sino</strong> evalúa una condición lógica (una pregunta): si dicha condición se cumple (es Verdadera), toma un camino; si no se cumple (es Falsa), toma un desvío alternativo.
+            </p>
+
+            <h3>Operadores de Comparación y Lógicos</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Operador</th>
+                        <th>Operación</th>
+                        <th>Ejemplo Aplicado</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>&gt; y &lt;</td><td>Mayor que / Menor que</td><td><code>temperatura &gt; 38</code></td></tr>
+                    <tr><td>&gt;= y &lt;=</td><td>Mayor/Menor o Igual que</td><td><code>promedio &lt;= 6</code></td></tr>
+                    <tr><td>=</td><td>Igualdad absoluta</td><td><code>password = "1234"</code></td></tr>
+                    <tr><td>&lt;&gt;</td><td>Diferente o Distinto de</td><td><code>color &lt;&gt; "Rojo"</code></td></tr>
+                    <tr><td>Y / O</td><td>Operadores booleanos compuestos</td><td><code>(edad &gt;= 18) Y (tieneDNI = Verdadero)</code></td></tr>
+                </tbody>
+            </table>
+
+            <div class="image-placeholder">
+                [Sugerencia de Imagen: Captura de un diagrama de flujo de PSeInt mostrando la bifurcación de caminos del SI y el NO]
+            </div>
+
+            <!-- ZONA INTERACTIVA DEL MÓDULO 2 -->
+            <div class="interactive-box">
+                <h4>💻 LABORATORIO DE PRÁCTICA: Corrección de Errores Lógicos</h4>
+                <p><strong>Consigna:</strong> El siguiente algoritmo fue diseñado para determinar si un alumno aprobó o no una materia (aprueba con 6 o más). Sin embargo, la lógica de la condicional está al revés y los mensajes cruzados. Modificá el código directamente en el editor para arreglarlo:</p>
+                
+                <div class="workspace">
+<textarea id="codeMod2" class="h-large">Algoritmo EvaluacionNota
+    Definir nota Como Real;
+    Escribir "Ingrese nota:";
+    Leer nota;
+    Si nota < 6 Entonces
+        Escribir "Felicidades, estás aprobado.";
+    Sino
+        Escribir "Desaprobado. Tenés que recuperar.";
+    FinSi
+FinAlgoritmo</textarea>
+                    <button onclick="checkModulo2()">Verificar Corrección</button>
+                </div>
+                <div id="feedMod2" class="feedback"></div>
+            </div>
+        </section>
+
+
+        <!-- MÓDULO 3: BUCLES Y CICLOS -->
+        <section id="modulo3">
+            <h2>3. Estructuras Cíclicas o Repetitivas (Mientras y Para)</h2>
+            <p>
+                Uno de los superpoderes de las computadoras es la capacidad de repetir una tarea millones de veces sin cansarse ni cometer errores. En PSeInt utilizamos estructuras como el <strong>Mientras (While)</strong> y el <strong>Para (For)</strong> para controlar bucles.
+            </p>
+            <p>
+                El bucle <strong>Mientras</strong> evalúa una condición en cada vuelta. El bloque interno de instrucciones se ejecutará repetidamente <em>mientras</em> esa condición siga dando como resultado <code>Verdadero</code>. Es el mecanismo ideal para validar que el usuario ingrese datos correctos.
+            </p>
+
+            <h3>Ejemplo de Código Limpio: Validación Indefinida</h3>
+<pre><span class="keyword">Algoritmo</span> ValidarPin
+    <span class="keyword">Definir</span> pin <span class="keyword">Como</span> <span class="keyword">Entero</span>;
+    
+    <span class="keyword">Escribir</span> <span class="text">"Ingrese su código de seguridad de 4 dígitos:"</span>;
+    <span class="keyword">Leer</span> pin;
+    
+    <span class="comment">// Si el PIN no es el correcto, lo encierra en el bucle</span>
+    <span class="keyword">Mientras</span> pin &lt;&gt; <span class="number">9912</span> <span class="keyword">Hacer</span>
+        <span class="keyword">Escribir</span> <span class="text">"PIN incorrecto. Acceso denegado. Intente de nuevo:"</span>;
+        <span class="keyword">Leer</span> pin;
+    <span class="keyword">FinMientras</span>
+    
+    <span class="keyword">Escribir</span> <span class="text">"¡Acceso Concedido de forma segura!"</span>;
+<span class="keyword">FinAlgoritmo</span></pre>
+
+            <!-- ZONA INTERACTIVA DEL MÓDULO 3 -->
+            <div class="interactive-box">
+                <h4>🧠 AUTOEVALUACIÓN: Trivia Teórica Rápida</h4>
+                <p>¿Qué sucedería en el código de arriba si nos olvidamos de incluir la línea <code>Leer pin;</code> dentro del cuerpo del bucle <code>Mientras</code>?</p>
+                
+                <div class="quiz-option" onclick="checkTrivia(this, false)">A) El programa da un error de sintaxis inmediatamente y no arranca.</div>
+                <div class="quiz-option" onclick="checkTrivia(this, true)">B) Se produce un "bucle infinito" porque la variable jamás cambiará su valor original y la condición siempre será verdadera.</div>
+                <div class="quiz-option" onclick="checkTrivia(this, false)">C) El bucle se salta automáticamente y termina el programa de inmediato.</div>
+                <div id="feedTrivia" class="feedback"></div>
+            </div>
+        </section>
+
+
+        <!-- MÓDULO 4: EJERCICIO INTEGRADOR -->
+        <section id="modulo4">
+            <h2>4. Banco de Ejercicios y Desafío Integrador Final</h2>
+            <p>
+                A continuación, te presento un caso de aplicación real de lógica combinada: cálculo matemático y condicional compuesto. Estúdialo detalladamente y fíjate en su prolijidad sintáctica.
+            </p>
+            <h3>Caso Resuelto: Liquidación de Sueldos con Horas Extras</h3>
+<pre><span class="keyword">Algoritmo</span> CalcularSueldoNeto
+    <span class="keyword">Definir</span> horasTrabajadas, horasExtras <span class="keyword">Como</span> <span class="keyword">Entero</span>;
+    <span class="keyword">Definir</span> valorHora, sueldoBruto, retenciones, sueldoNeto <span class="keyword">Como</span> <span class="keyword">Real</span>;
+    
+    <span class="keyword">Escribir</span> <span class="text">"Cantidad de horas mensuales trabajadas:"</span>;
+    <span class="keyword">Leer</span> horasTrabajadas;
+    <span class="keyword">Escribir</span> <span class="text">"Valor monetario de la hora base:"</span>;
+    <span class="keyword">Leer</span> valorHora;
+    
+    <span class="keyword">Si</span> horasTrabajadas &lt;= <span class="number">40</span> <span class="keyword">Entonces</span>
+        sueldoBruto &lt;- horasTrabajadas * valorHora;
+    <span class="keyword">Sino</span>
+        horasExtras &lt;- horasTrabajadas - <span class="number">40</span>;
+        sueldoBruto &lt;- (<span class="number">40</span> * valorHora) + (horasExtras * valorHora * <span class="number">2</span>);
+    <span class="keyword">FinSi</span>
+    
+    retenciones &lt;- sueldoBruto * <span class="number">0.11</span>; <span class="comment">// Descuento del 11% por jubilación</span>
+    sueldoNeto &lt;- sueldoBruto - retenciones;
+    
+    <span class="keyword">Escribir</span> <span class="text">"Sueldo Bruto calculado: $"</span>, sueldoBruto;
+    <span class="keyword">Escribir</span> <span class="text">"Sueldo Neto final a cobrar en mano: $"</span>, sueldoNeto;
+<span class="keyword">FinAlgoritmo</span></pre>
+
+            <!-- ZONA INTERACTIVA DEL DESAFÍO INTEGRADOR -->
+            <div class="interactive-box">
+                <h4>🏆 GRAN DESAFÍO: El Validador de Descuentos</h4>
+                <p><strong>Consigna del desafío autónomo:</strong> Modificá o completá el código de abajo para que si el <code>montoCompra</code> supera los $10.000, se aplique un 15% de descuento sobre el total (es decir, multiplicar por 0.15). Si no los supera, el descuento debe ser 0.</p>
+                
+                <div class="workspace">
+<textarea id="codeMod4" class="h-large">Algoritmo Supermercado
+    Definir montoCompra, descuento, totalFinal Como Real;
+    Escribir "Monto de compra:";
+    Leer montoCompra;
+    
+    // ESCRIBÍ LA ESTRUCTURA SI-ENTONCES ACÁ ABAJO
+    
+</textarea>
+                    <button onclick="checkModulo4()">Evaluar Desafío Integrador</button>
+                </div>
+                <div id="feedMod4" class="feedback"></div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>&copy; 2026 - Plataforma Todo-en-Uno Didáctica e Interactiva de PSeInt</p>
+    </footer>
+
+    <script>
+        // MOTOR DE VALIDACIÓN INTERACTIVA (JAVASCRIPT)
+
+        function checkModulo1() {
+            const val = document.getElementById('codeMod1').value.trim().toLowerCase().replace(/\s+/g, ' ');
+            const feed = document.getElementById('feedMod1');
+            
+            if (val === "definir precioproducto como real;" || val === "definir precioproducto como real") {
+                feed.className = "feedback success";
+                feed.innerHTML = "¡Brillante! Declaración de variable impecable. Usaste el tipo 'Real' de forma correcta para procesar decimales.";
+                feed.style.display = "block";
+            } else {
+                feed.className = "feedback error";
+                feed.innerHTML = "Cerca, pero no del todo. Asegurate de escribir exactamente: <code>Definir precioProducto Como Real;</code>";
+                feed.style.display = "block";
+            }
+        }
+
+        function checkModulo2() {
+            const val = document.getElementById('codeMod2').value.trim();
+            const feed = document.getElementById('feedMod2');
+            
+            if (val.includes("nota >= 6") || val.includes("nota > 5")) {
+                feed.className = "feedback success";
+                feed.innerHTML = "¡Excelente corrección! Modificaste la condición lógica invirtiendo el operador para que los mensajes coincidan con la realidad académica.";
+                feed.style.display = "block";
+            } else {
+                feed.className = "feedback error";
+                feed.innerHTML = "Sigue sin funcionar correctamente. Recordá cambiar la condición del 'Si' para que busque las notas aprobadas (mayores o iguales a 6).";
+                feed.style.display = "block";
+            }
+        }
+
+        function checkTrivia(element, isCorrect) {
+            const options = document.querySelectorAll('#modulo3 .quiz-option');
+            options.forEach(op => op.style.pointerEvents = 'none'); // Bloquea clics repetidos
+
+            if (isCorrect) {
+                element.classList.add('selected-correct');
+            } else {
+                element.classList.add('selected-incorrect');
+                options[1].classList.add('selected-correct'); // Muestra la respuesta ganadora
+            }
+        }
+
+        function checkModulo4() {
+            const val = document.getElementById('codeMod4').value.trim().toLowerCase();
+            const feed = document.getElementById('feedMod4');
+            
+            if (val.includes("montocompra > 10000") && (val.includes("descuento <-") || val.includes("descuento="))) {
+                feed.className = "feedback success";
+                feed.innerHTML = "¡Impresionante! Has dominado por completo las estructuras condicionales aplicadas a problemas matemáticos complejos.";
+                feed.style.display = "block";
+            } else {
+                feed.className = "feedback error";
+                feed.innerHTML = "El validador detecta errores en la lógica. Recordá armar la estructura: <code>Si montoCompra > 10000 Entonces descuento <- montoCompra * 0.15 ...</code>";
+                feed.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
